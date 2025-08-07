@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Book Haven</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f8;
+      color: #333;
+    }
+
+    .sidebar {
+      width: 230px;
+      height: 100vh;
+      position: fixed;
+      background-color: #1e293b;
+      padding: 30px 20px;
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .sidebar h2 {
+      margin-bottom: 40px;
+      font-size: 22px;
+      text-align: center;
+    }
+
+    .sidebar a {
+      display: block;
+      color: #cbd5e1;
+      padding: 12px 20px;
+      text-decoration: none;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      transition: background 0.2s;
+    }
+
+    .sidebar a:hover {
+      background-color: #334155;
+    }
+
+    .main {
+      margin-left: 230px;
+      padding: 30px;
+      transition: margin-left 0.3s ease;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .topbar h1 {
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background-color: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .card h3 {
+      font-size: 18px;
+      color: #64748b;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 24px;
+      font-weight: bold;
+      color: #0f172a;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+      }
+
+      .main {
+        margin-left: 0;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2> Admin Panel</h2>
+    <a href="#">Dashboard</a>
+    <a href="#">Manage Books</a>
+    <a href="#">Orders</a>
+    <a href="#">Users</a>
+    <a href="#">Logout</a>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <h1>Welcome, Admin</h1>
+      <span id="timestamp">🕒 Updated: --</span>
+    </div>
+
+    <div class="card-container">
+      <div class="card">
+        <h3>Total Users</h3>
+        <p id="users">0</p>
+      </div>
+      <div class="card">
+        <h3>Total Books</h3>
+        <p id="books">0</p>
+      </div>
+      <div class="card">
+        <h3>Total Orders</h3>
+        <p id="orders">0</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function updateDashboard() {
+      fetch('/api/admin/stats')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('users').textContent = data.users;
+          document.getElementById('books').textContent = data.books;
+          document.getElementById('orders').textContent = data.orders;
+          document.getElementById('timestamp').textContent = '🕒 Updated: ' + new Date().toLocaleTimeString();
+        })
+        .catch(error => {
+          console.error("Error loading data:", error);
+        });
+    }
+
+    updateDashboard();
+    setInterval(updateDashboard, 5000);
+  </script>
+</body>
+</html>

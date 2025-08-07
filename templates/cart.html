@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Your Cart - Book World</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f2f2f2;
+    }
+
+    header {
+      background-color: #2c3e50;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    h2 {
+      text-align: center;
+      margin-top: 30px;
+    }
+
+    .cart-container {
+      width: 90%;
+      max-width: 900px;
+      margin: 30px auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #2c3e50;
+      color: white;
+    }
+
+    .btn {
+      background-color: #e74c3c;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn:hover {
+      background-color: #c0392b;
+    }
+
+    .clear-btn {
+      margin-top: 20px;
+      background-color: #555;
+    }
+
+    .total {
+      text-align: right;
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    footer {
+      background-color: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div><strong>Book World</strong></div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/login">Login</a>
+      <a href="/register">Register</a>
+      <a href="/about">About</a>
+      <a href="/admin">Admin</a>
+      <a href="/cart">🛒</a>
+    </nav>
+  </header>
+
+  <h2>Your Cart</h2>
+
+  <div class="cart-container">
+    {% if cart and cart|length > 0 %}
+    <table>
+      <tr>
+        <th>Title</th>
+        <th>Price</th>
+        <th>Qty</th>
+        <th>Subtotal</th>
+        <th>Action</th>
+      </tr>
+      {% for item in cart %}
+      <tr>
+        <td>{{ item.title }}</td>
+        <td>₹{{ item.price }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>₹{{ item.price * item.quantity }}</td>
+        <td>
+          <a href="{{ url_for('remove_from_cart', book_id=item.id) }}">
+            <button class="btn">Remove</button>
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <div class="total">Total: ₹{{ total }}</div>
+
+    <form action="{{ url_for('clear_cart') }}" method="post">
+      <button type="submit" class="btn clear-btn">Clear Cart</button>
+    </form>
+    {% else %}
+      <p style="text-align:center;">Your cart is empty.</p>
+    {% endif %}
+  </div>
+
+  <footer>
+    &copy; 2025 Book World. All rights reserved.
+  </footer>
+</body>
+</html>

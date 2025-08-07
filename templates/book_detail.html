@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ book.title }} - Book World</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f7f9fb;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #2c3e50;
+      color: #fff;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav a {
+      color: #fff;
+      margin: 0 12px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      background-color: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+
+    .book-image {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .book-image img {
+      width: 100%;
+      max-width: 300px;
+      border-radius: 8px;
+    }
+
+    .book-info {
+      flex: 2;
+      min-width: 280px;
+    }
+
+    .book-info h1 {
+      margin-top: 0;
+      font-size: 26px;
+    }
+
+    .book-info p {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .price {
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 20px;
+      color: #e74c3c;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: #2c3e50;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      margin-top: 20px;
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
+    .btn:hover {
+      background-color: #1a242f;
+    }
+
+    footer {
+      background-color: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+
+    @media screen and (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div><strong>Book World</strong></div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/login">Login</a>
+      <a href="/register">Register</a>
+      <a href="/about">About</a>
+      <a href="/admin">Admin</a>
+      <a href="/cart">🛒 Cart</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="book-image">
+      <img src="{{ book.image_url or url_for('static', filename='default_book.jpg') }}" alt="{{ book.title }}">
+    </div>
+    <div class="book-info">
+      <h1>{{ book.title }}</h1>
+      <p><strong>Author:</strong> {{ book.author }}</p>
+      <p><strong>Category:</strong> {{ book.category }}</p>
+      <p>{{ book.description or "No description available." }}</p>
+      <div class="price">₹{{ book.price }}</div>
+
+      <a href="{{ url_for('add_to_cart', book_id=book._id) }}" class="btn">Add to Cart</a>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Book World. All rights reserved.
+  </footer>
+
+</body>
+</html>
